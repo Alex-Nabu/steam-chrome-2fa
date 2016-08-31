@@ -1,0 +1,24 @@
+{
+  "manifest_version": 2,
+
+  "name": "Steam Chrome 2fa",
+  "description": "This extension will generate steam two factor auth codes when logging in to steam communty",
+  "version": "0.0.0.2",
+
+  "browser_action": {
+   "default_icon": "icon.png",
+   "default_popup": "popup.html"
+  },
+
+  "content_scripts": [
+    {
+      "matches" : ["https://steamcommunity.com/*login*", "https://store.steampowered.com/*login*"],
+      "js" : ["jssha/sha.js", "totp.js", "input_2fa_code.js"]
+    }
+  ],
+
+  "permissions": [
+   "activeTab",
+   "storage"
+   ]
+}

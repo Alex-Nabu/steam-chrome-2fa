@@ -1,0 +1,112 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+table {
+  color: #333;
+  font-family: sans-serif;
+  font-size: .9em;
+  font-weight: 300;
+  text-align: left;
+  line-height: 40px;
+  border-spacing: 0;
+  width: 350px;
+  margin: 8px auto;
+  margin-bottom: 2px;
+}
+
+thead tr:first-child {
+  background: linear-gradient( to bottom, rgba(47,137,188,1) 5%, rgba(23,67,92,1) 95%);
+  color: #fff;
+  border: none;
+  text-align: center;
+}
+
+th {font-weight: bold;}
+th:first-child, td:first-child {padding: 0 15px 0 20px;}
+
+thead tr:last-child th {border-bottom: 3px solid #ddd;}
+
+tbody tr:hover {background-color: #ddd;}
+tbody td {border-bottom: 1px solid #ddd;}
+
+td:last-child {
+  text-align: right;
+  padding-right: 10px;
+}
+
+table td input[type='text'] {
+  box-sizing: border-box;
+  height: 20px;
+  padding: 4px;
+  width: 45%;
+  border : none;
+  border-radius: 4px;
+  border : 1px solid #ddd;
+}
+
+table td input[type='text']:first-child {
+  margin-right: 4px;
+}
+
+table button {
+  box-sizing: border-box;
+  padding : 4px 16px;
+  cursor: pointer;
+  font-size: 12px;
+  vertical-align: top;
+}
+
+table td button {
+  margin-right: 8px;
+}
+
+
+table #add_account {
+  float: right;
+  vertical-align: bottom;
+  font: normal normal normal 14px/1 FontAwesome;
+  padding-top: 12px;
+  cursor: pointer;
+  -webkit-user-select: none;
+}
+
+.button {
+  color: #696969;
+  padding-right: 5px;
+  cursor: pointer;
+  margin-left: 23px;
+}
+
+.alterar:hover {
+  color: #0a79df;
+}
+
+.excluir:hover {
+  color: #dc2a2a;
+}
+
+.edit_2fa_input {
+
+}
+
+#donate_me_area {
+  margin-top : 26px;
+  text-align: center;
+}
+
+#donate_me_area a {
+  display: block;
+  margin : 0 auto;
+}
+
+#donate_me_area a img {
+  height: 37px;
+}
+
+#donate_me_message {
+  padding : 4px;
+  line-height: 12px;
+}
