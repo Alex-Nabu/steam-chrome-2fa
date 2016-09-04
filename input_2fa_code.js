@@ -1,4 +1,9 @@
-var account_input = document.getElementById("steamAccountName");
+var account_input = document.getElementById("input_username");
+
+if(!account_input) {
+  account_input = document.getElementById("steamAccountName");
+}
+
 var auth_input = document.getElementById("twofactorcode_entry");
 var totpObj = new TOTP();
 
