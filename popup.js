@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
   load_accounts(function() {
     console.log('accounts loaded');
+    tryInitCodes();
   });
 
   // create new account
@@ -59,6 +60,97 @@ document.addEventListener('DOMContentLoaded', function() {
 }, false);
 
 var default_account_display_innerHTML = "<td></td><td><i class=\"fa fa-pencil button alterar\"></i><i class=\"fa fa-trash button excluir\"></i></td>";
+
+// ===== Codes rendering (show all TOTPs with copy) =====
+var totpInstance = null;
+var codesTimer = null;
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function renderCodesOnce() {
+  var tableBody = document.querySelector('#codes_table tbody');
+  if (!tableBody) return;
+  tableBody.innerHTML = '';
+
+  var accounts = window.accounts || {};
+
+  Object.keys(accounts).forEach(function(name) {
+    var secret = accounts[name] && accounts[name].shared_secret;
+    var code = '';
+    try {
+      code = totpInstance ? totpInstance.getOTP(secret) : '';
+    } catch (e) {
+      code = '';
+    }
+
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td class="account_name">' + escapeHtml(name) + '</td>' +
+      '<td class="account_code"><code>' + escapeHtml(code || '') + '</code></td>' +
+      '<td><button class="copy_code">Copy</button></td>';
+
+    var copyBtn = tr.querySelector('.copy_code');
+    copyBtn.addEventListener('click', function() {
+      var text = (tr.querySelector('.account_code code') || {}).textContent || '';
+      if (!text) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).catch(function() {});
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+      }
+    });
+
+    tableBody.appendChild(tr);
+  });
+}
+
+function rerenderCodes() {
+  // Recompute codes for each row without rebinding buttons if possible
+  var rows = document.querySelectorAll('#codes_table tbody tr');
+  if (!rows || rows.length === 0) {
+    renderCodesOnce();
+    return;
+  }
+
+  rows.forEach(function(tr) {
+    var nameEl = tr.querySelector('.account_name');
+    if (!nameEl) return;
+    var name = nameEl.textContent;
+    var acc = (window.accounts || {})[name];
+    var code = '';
+    try {
+      code = totpInstance ? totpInstance.getOTP(acc && acc.shared_secret) : '';
+    } catch (e) {
+      code = '';
+    }
+    var codeEl = tr.querySelector('.account_code code');
+    if (codeEl) codeEl.textContent = code || '';
+  });
+}
+
+function tryInitCodes() {
+  try {
+    totpInstance = new TOTP();
+  } catch (e) {
+    totpInstance = null;
+  }
+  renderCodesOnce();
+  if (codesTimer) clearInterval(codesTimer);
+  // Update codes every second
+  codesTimer = setInterval(rerenderCodes, 1000);
+}
 
 // handle a click of the delete button on accounts
 function delete_button_click_action(delete_click) {

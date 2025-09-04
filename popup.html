@@ -4,9 +4,26 @@
     <title>Steam Chrome 2fa</title>
     <link rel="stylesheet" type="text/css" href="font-awesome.min.css"/>
     <link rel="stylesheet" type="text/css" href="app.css"/>
+    <script src="jssha/sha.js"></script>
+    <script src="totp.js"></script>
     <script src="popup.js"></script>
   </head>
   <body>
+    <div id="codes">
+      <table id="codes_table">
+        <thead>
+          <tr>
+            <th colspan="3">Codes</th>
+          </tr>
+          <tr>
+            <th>Account</th>
+            <th>Code</th>
+            <th>Copy</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
 
     <table>
   <thead>
